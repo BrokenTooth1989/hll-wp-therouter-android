@@ -5,12 +5,16 @@ import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.therouter.app.compose.data.AppContainer;
+import com.therouter.app.compose.data.AppContainerImpl;
 import com.therouter.app.HomePathIndex;
 import com.therouter.demo.di.ITest;
 import com.therouter.router.RouteMapKt;
 import com.therouter.router.RouterMapInitTask;
 
 public class App extends MultiDexApplication {
+    public AppContainer container;
+
     @Override
     protected void attachBaseContext(Context base) {
         TheRouter.setDebug(true);
@@ -39,5 +43,6 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        container = new AppContainerImpl(this);
     }
 }

@@ -69,6 +69,16 @@ public class MainActivity extends AppCompatActivity {
                         .navigation(v.getContext());
             }
         });
+        findViewById(R.id.button4_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TheRouter.build(com.therouter.app.compose.PathIndex.HOME)
+                        .withInAnimation(R.anim.activity_slide_in)
+                        .withOutAnimation(R.anim.activity_slide_out)
+                        // 加动画以后，必须传入activity对象，否则debug环境抛异常，release动画不生效
+                        .navigation(v.getContext());
+            }
+        });
         findViewById(R.id.button5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

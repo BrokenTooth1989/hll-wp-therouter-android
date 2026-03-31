@@ -8,6 +8,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary" />
+
         <TextView
             android:id="@+id/content_version"
             android:layout_width="wrap_content"
@@ -84,6 +89,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="动态化能力演示" />
+
+        <Button
+            android:id="@+id/button4_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="Compose 演示" />
 
         <Button
             android:id="@+id/button5"

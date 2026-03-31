@@ -158,6 +158,20 @@
     "params": {}
   },
   {
+    "path": "https://kymjs.com/shell_screen/home",
+    "className": "com.therouter.app.compose.ui.MainActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  },
+  {
+    "path": "https://kymjs.com/shell_screen/brick",
+    "className": "com.therouter.app.compose.brick.BrickActivity",
+    "action": "",
+    "description": "",
+    "params": {}
+  },
+  {
     "path": "http://kymjs.com/therouter/demo_navigator",
     "className": "com.therouter.app.classtest.NavigatorTestActivity",
     "action": "",
