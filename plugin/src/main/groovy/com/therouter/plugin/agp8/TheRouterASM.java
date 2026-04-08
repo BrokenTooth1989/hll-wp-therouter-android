@@ -20,9 +20,9 @@ public abstract class TheRouterASM implements AsmClassVisitorFactory<TextParamet
     public ClassVisitor createClassVisitor(ClassContext classContext, ClassVisitor classVisitor) {
         File therouterBuildFolder = getParameters().get().getTheRouterBuildFolder().get();
         try {
-            Map<String, String> serviceProvideMap = ClassCacheUtils.readToMap(new File(therouterBuildFolder, "serviceProvide.therouter"));
-            Set<String> autowiredSet = ClassCacheUtils.readToSet(new File(therouterBuildFolder, "autowired.therouter"));
-            Set<String> routeSet = ClassCacheUtils.readToSet(new File(therouterBuildFolder, "route.therouter"));
+            Map<String, String> serviceProvideMap = ClassCacheUtils.readToMap(new File(therouterBuildFolder, ClassCacheUtils.CACHE_SERVICE_PROVIDE));
+            Set<String> autowiredSet = ClassCacheUtils.readToSet(new File(therouterBuildFolder, ClassCacheUtils.CACHE_AUTOWIRED));
+            Set<String> routeSet = ClassCacheUtils.readToSet(new File(therouterBuildFolder, ClassCacheUtils.CACHE_ROUTE));
             return new AddCodeVisitor(classVisitor, serviceProvideMap, autowiredSet, routeSet, false);
         } catch (IOException e) {
             return classVisitor;

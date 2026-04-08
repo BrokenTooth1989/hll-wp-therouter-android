@@ -251,9 +251,9 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
             }
         }
 
-        boolean change1 = ClassCacheUtils.write(TheRouterInjects.serviceProvideMap.keySet(), new File(therouterBuildFolder, "serviceProvide.therouter"));
-        boolean change2 = ClassCacheUtils.write(TheRouterInjects.autowiredSet, new File(therouterBuildFolder, "autowired.therouter"));
-        boolean change3 = ClassCacheUtils.write(TheRouterInjects.routeSet, new File(therouterBuildFolder, "route.therouter"));
+        boolean change1 = ClassCacheUtils.write(TheRouterInjects.serviceProvideMap.keySet(), new File(therouterBuildFolder, ClassCacheUtils.CACHE_SERVICE_PROVIDE));
+        boolean change2 = ClassCacheUtils.write(TheRouterInjects.autowiredSet, new File(therouterBuildFolder, ClassCacheUtils.CACHE_AUTOWIRED));
+        boolean change3 = ClassCacheUtils.write(TheRouterInjects.routeSet, new File(therouterBuildFolder, ClassCacheUtils.CACHE_ROUTE));
         if (change1 || change2 || change3) {
             onCacheChange();
         }
