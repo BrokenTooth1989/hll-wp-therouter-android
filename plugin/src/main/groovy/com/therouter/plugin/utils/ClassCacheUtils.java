@@ -16,14 +16,18 @@ import java.util.Set;
 
 public class ClassCacheUtils {
 
+    public static final String CACHE_SERVICE_PROVIDE = "serviceProvide.therouter";
+    public static final String CACHE_AUTOWIRED = "autowired.therouter";
+    public static final String CACHE_ROUTE = "route.therouter";
+
     public static boolean write(Set<String> set, File file) throws IOException {
         String content = set2String(set);
-        String cache = set2String(readToSet(file));
-        if (content.equals(cache)) {
-            // 缓存没变化
-            return false;
-        }
         if (file.exists()) {
+            // 文件已存在时才做"内容无变化"的跳过优化
+            String cache = set2String(readToSet(file));
+            if (content.equals(cache)) {
+                return false;
+            }
             file.delete();
         }
         if (!file.getParentFile().exists()) {

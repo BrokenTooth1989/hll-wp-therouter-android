@@ -10,6 +10,7 @@ import com.therouter.plugin.agp8.TextParameters
 import com.therouter.plugin.agp8.TheRouterASM
 import com.therouter.plugin.agp8.TheRouterGetAllTask
 import com.therouter.plugin.agp8.TheRouterTask
+import com.therouter.plugin.utils.ClassCacheUtils
 import kotlin.Unit
 import kotlin.jvm.functions.Function1
 import org.gradle.api.Action
@@ -57,7 +58,7 @@ public class TheRouterPlugin implements Plugin<Project> {
                     cachePath = new File(project.getRootDir(), theRouterExtension.incrementalCachePath).getAbsolutePath();
                 }
                 final File therouterBuildFolder = new File(cachePath, "therouter");
-                boolean isIncremental = theRouterExtension.forceIncremental || (theRouterExtension.debug && therouterBuildFolder.exists());
+                boolean isIncremental = (theRouterExtension.forceIncremental || theRouterExtension.debug) && isCacheReady(therouterBuildFolder);
                 if (!isShow) {
                     isShow = true;
                     System.out.println();
@@ -139,10 +140,22 @@ public class TheRouterPlugin implements Plugin<Project> {
         });
     }
 
+    private static boolean isCacheReady(File dir) {
+        if (dir == null || !dir.exists()) return false
+        return hasCacheFile(dir, ClassCacheUtils.CACHE_SERVICE_PROVIDE)
+                && hasCacheFile(dir, ClassCacheUtils.CACHE_AUTOWIRED)
+                && hasCacheFile(dir, ClassCacheUtils.CACHE_ROUTE)
+    }
+
+    private static boolean hasCacheFile(File dir, String name) {
+        File f = new File(dir, name)
+        return f.isFile() && f.canRead()
+    }
+
     private static String computeCacheHash(File therouterBuildFolder) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5")
-            ["serviceProvide.therouter", "autowired.therouter", "route.therouter"].each { name ->
+            [ClassCacheUtils.CACHE_SERVICE_PROVIDE, ClassCacheUtils.CACHE_AUTOWIRED, ClassCacheUtils.CACHE_ROUTE].each { name ->
                 File f = new File(therouterBuildFolder, name)
                 if (f.exists()) {
                     md.update(f.bytes)
