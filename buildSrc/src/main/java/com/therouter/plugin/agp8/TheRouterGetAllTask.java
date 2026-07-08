@@ -81,9 +81,12 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
         JarFile theRouterJarFile = null;
         JarEntry theRouterServiceProvideInjecter = null;
 
+        System.out.println("----------------------theRouterTransform start-----------------------------");
         Set<String> addedEntries = new HashSet<>();
         for (RegularFile file : getAllJars().get()) {
             File jar = file.getAsFile();
+            System.out.println("jarFile: " + jar.getName());
+            System.out.println("jarFilePath: " + jar.getAbsolutePath());
             if (jar.exists()) {
                 JarFile jarFile = null;
                 boolean needCloseJarFile = true;
@@ -92,6 +95,7 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
                     for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
                         JarEntry jarEntry = e.nextElement();
                         String name = jarEntry.getName();
+                        System.out.println("jarEntry: " + name);
                         if (name.contains("META-INF/") || !addedEntries.add(name)
                                 || this.theRouterExtension.removeClass.contains(name)) {
                             // 如果已添加该条目，则跳过
@@ -150,6 +154,7 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
                                             for (FieldNode fieldNode : fieldList) {
                                                 if (TheRouterInjects.FIELD_FLOW_TASK_JSON.equals(fieldNode.name)) {
                                                     Map<String, String> map = TheRouterInjects.gson.fromJson(fieldNode.value.toString(), HashMap.class);
+                                                    System.out.println("FlowTaskFieldValue: " + fieldNode.value.toString());
                                                     TheRouterInjects.flowTaskMap.putAll(map);
                                                 }
                                             }
@@ -185,8 +190,11 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
         }
 
         for (Directory directory : getAllDirectories().get()) {
+            System.out.println("directoryName: " + directory.getAsFile().getName());
+            System.out.println("directoryPath: " + directory.getAsFile().getAbsolutePath());
             for (File file : directory.getAsFileTree()) {
                 String name = directory.getAsFile().toURI().relativize(file.toURI()).getPath().replace(File.separatorChar, '/');
+                System.out.println("directoryFileName: " + name);
                 if (name.contains("META-INF/") || !addedEntries.add(name)) {
                     // 如果已添加该条目，则跳过
                     continue;
@@ -232,6 +240,7 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
                             for (FieldNode fieldNode : fieldList) {
                                 if (TheRouterInjects.FIELD_FLOW_TASK_JSON.equals(fieldNode.name)) {
                                     Map<String, String> map = TheRouterInjects.gson.fromJson(fieldNode.value.toString(), HashMap.class);
+                                    System.out.println("FlowTaskFieldValue: " + fieldNode.value.toString());
                                     TheRouterInjects.flowTaskMap.putAll(map);
                                 }
                             }
@@ -251,6 +260,33 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
             }
         }
 
+        System.out.println("=== TheRouterInjects Debug Output start ===");
+        System.out.println("serviceProvideMap size: " + TheRouterInjects.serviceProvideMap.size());
+        for (Map.Entry<String, String> entry : TheRouterInjects.serviceProvideMap.entrySet()) {
+            System.out.println("  serviceProvideMap: " + entry.getKey() + " -> " + entry.getValue());
+        }
+        System.out.println("autowiredSet size: " + TheRouterInjects.autowiredSet.size());
+        for (String s : TheRouterInjects.autowiredSet) {
+            System.out.println("  autowiredSet: " + s);
+        }
+        System.out.println("routeSet size: " + TheRouterInjects.routeSet.size());
+        for (String s : TheRouterInjects.routeSet) {
+            System.out.println("  routeSet: " + s);
+        }
+        System.out.println("routeMapStringSet size: " + TheRouterInjects.routeMapStringSet.size());
+        for (String s : TheRouterInjects.routeMapStringSet) {
+            System.out.println("  routeMapStringSet: " + s);
+        }
+        System.out.println("flowTaskMap size: " + TheRouterInjects.flowTaskMap.size());
+        for (Map.Entry<String, String> entry : TheRouterInjects.flowTaskMap.entrySet()) {
+            System.out.println("  flowTaskMap: " + entry.getKey() + " -> " + entry.getValue());
+        }
+        System.out.println("allClass size: " + TheRouterInjects.allClass.size());
+//        for (String s : TheRouterInjects.allClass) {
+//            System.out.println("  allClass: " + s);
+//        }
+        System.out.println("=== TheRouterInjects Debug Output finish ===");
+
         boolean change1 = ClassCacheUtils.write(TheRouterInjects.serviceProvideMap.keySet(), new File(therouterBuildFolder, "serviceProvide.therouter"));
         boolean change2 = ClassCacheUtils.write(TheRouterInjects.autowiredSet, new File(therouterBuildFolder, "autowired.therouter"));
         boolean change3 = ClassCacheUtils.write(TheRouterInjects.routeSet, new File(therouterBuildFolder, "route.therouter"));
@@ -266,6 +302,8 @@ public abstract class TheRouterGetAllTask extends DefaultTask {
                 e.printStackTrace();
             }
         }
+
+        System.out.println("----------------------theRouterTransform end-----------------------------");
     }
 
     public void check() throws ClassNotFoundException, IOException {

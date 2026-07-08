@@ -47,16 +47,22 @@ class TheRouterPlugin : Plugin<Project> {
             if (!isShow) {
                 isShow = true
                 println()
-                println("----------------------TheRouter Environment------------------------------")
+                println("----------------------TheRouter Environment start------------------------------")
 //                println(LogUI.C_ERROR.getValue() + "⚠️警告:你的接入方式已经废弃，请将根目录 build.gradle 中【cn.therouter.agp8】替换为【cn.therouter】" + LogUI.E_NORMAL.getValue());
                 println("TheRouter plugin agp9：" + LogUI.C_BLACK_GREEN.getValue() + "cn.therouter:" + BuildConfig.NAME + ":" + BuildConfig.VERSION + LogUI.E_NORMAL.getValue())
                 println("JDK Version::" + System.getProperty("java.version"))
                 println("Gradle Version::" + project.getGradle().getGradleVersion())
-                println("本次是增量构建::" + isIncremental)
+                println("theRouterExtension.debug::" + theRouterExtension.debug)
+                println("----TheRouter Incremental start----")
+                println("forceIncremental::" + theRouterExtension.forceIncremental)
+                println("therouterBuildFolder::" + therouterBuildFolder.absolutePath)
+                println("therouterBuildFolder.exists()::" + therouterBuildFolder.exists())
+                println("本次是增量构建::$isIncremental")
+                println("----TheRouter Incremental finish----")
                 println("checkRouteMap::" + theRouterExtension.checkRouteMap)
                 println("checkFlowDepend::" + theRouterExtension.checkFlowDepend)
                 println("forceIncremental::" + theRouterExtension.forceIncremental)
-                println("incrementalCachePath::" + cachePath)
+                println("incrementalCachePath::$cachePath")
 
                 if (theRouterExtension.forceIncremental &&
                     (theRouterExtension.incrementalCachePath == null || theRouterExtension.incrementalCachePath.isBlank())
@@ -78,7 +84,7 @@ class TheRouterPlugin : Plugin<Project> {
                     println("详细原理请见文档：https://kymjs.com/code/2024/10/31/01/")
                 }
 
-                println("----------------------TheRouter Environment------------------------------")
+                println("----------------------TheRouter Environment finish------------------------------")
                 println()
             }
 
